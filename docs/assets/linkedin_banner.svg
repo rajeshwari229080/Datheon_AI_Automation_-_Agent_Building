@@ -1,0 +1,187 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC" />
+      <stop offset="100%" stop-color="#EDF2F7" />
+    </linearGradient>
+
+    <!-- Top Accent Bar Gradient -->
+    <linearGradient id="accentBar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#4F46E5" />
+      <stop offset="50%" stop-color="#06B6D4" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+
+    <!-- Soft Card Drop Shadow -->
+    <filter id="cardShadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0F172A" flood-opacity="0.04" />
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#0F172A" flood-opacity="0.02" />
+    </filter>
+
+    <style>
+      .font-bold { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-weight: 700; }
+      .font-semibold { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-weight: 600; }
+      .font-medium { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-weight: 500; }
+      .font-regular { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-weight: 400; }
+    </style>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="1200" height="675" fill="url(#bgGrad)" />
+
+  <!-- Top Accent Line -->
+  <rect width="1200" height="8" fill="url(#accentBar)" />
+
+  <!-- Header Category Badges -->
+  <g transform="translate(60, 42)">
+    <!-- Badge 1 -->
+    <rect x="0" y="0" width="220" height="32" rx="16" fill="#EEF2FF" />
+    <text x="110" y="20" class="font-bold" font-size="12" fill="#4F46E5" text-anchor="middle" letter-spacing="0.5">ENTERPRISE AUTOMATION</text>
+
+    <!-- Badge 2 -->
+    <rect x="230" y="0" width="160" height="32" rx="16" fill="#ECFDF5" />
+    <text x="310" y="20" class="font-bold" font-size="12" fill="#059669" text-anchor="middle" letter-spacing="0.5">4 MODULES + AI AGENTS</text>
+
+    <!-- Badge 3 -->
+    <rect x="400" y="0" width="130" height="32" rx="16" fill="#F0FDF4" />
+    <text x="465" y="20" class="font-bold" font-size="12" fill="#166534" text-anchor="middle" letter-spacing="0.5">PRODUCTION READY</text>
+  </g>
+
+  <!-- Header Title & Subtitle -->
+  <text x="60" y="125" class="font-bold" font-size="40" fill="#0F172A" letter-spacing="-0.5">Enterprise AI Automation Suite</text>
+  <text x="60" y="160" class="font-regular" font-size="18" fill="#64748B">Full-Stack Autonomous Workflows: Leads, Support Triage, Invoice OCR &amp; Multi-Agent Ops</text>
+
+  <!-- 4 Module Cards Container -->
+  <!-- Card 1: Lead Intelligence -->
+  <g transform="translate(60, 195)" filter="url(#cardShadow)">
+    <rect width="255" height="245" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1" />
+    <rect x="18" y="18" width="55" height="26" rx="6" fill="#EEF2FF" />
+    <text x="45" y="35" class="font-bold" font-size="12" fill="#4F46E5" text-anchor="middle">M-01</text>
+
+    <text x="18" y="74" class="font-bold" font-size="16" fill="#0F172A">Multi-Source Lead</text>
+    <text x="18" y="96" class="font-bold" font-size="16" fill="#0F172A">Routing &amp; AI Qual</text>
+
+    <text x="18" y="130" class="font-regular" font-size="13" fill="#64748B">
+      <tspan x="18" dy="0">• Deterministic ICP scoring</tspan>
+      <tspan x="18" dy="20">• Instant LLM fit analysis</tspan>
+      <tspan x="18" dy="20">• Sub-second latency SLA</tspan>
+      <tspan x="18" dy="20">• Live Airtable &amp; Slack alerts</tspan>
+    </text>
+    <rect x="18" y="208" width="80" height="20" rx="4" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1" />
+    <text x="58" y="222" class="font-medium" font-size="10" fill="#475569" text-anchor="middle">&lt; 10s SLA</text>
+  </g>
+
+  <!-- Card 2: Support Triage -->
+  <g transform="translate(335, 195)" filter="url(#cardShadow)">
+    <rect width="255" height="245" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1" />
+    <rect x="18" y="18" width="55" height="26" rx="6" fill="#ECFDF5" />
+    <text x="45" y="35" class="font-bold" font-size="12" fill="#059669" text-anchor="middle">M-02</text>
+
+    <text x="18" y="74" class="font-bold" font-size="16" fill="#0F172A">Autonomous Support</text>
+    <text x="18" y="96" class="font-bold" font-size="16" fill="#0F172A">&amp; Intelligent Triage</text>
+
+    <text x="18" y="130" class="font-regular" font-size="13" fill="#64748B">
+      <tspan x="18" dy="0">• 8 intent classifications</tspan>
+      <tspan x="18" dy="20">• Grounded RAG citations</tspan>
+      <tspan x="18" dy="20">• Prompt injection defense</tspan>
+      <tspan x="18" dy="20">• Draft-only human queue</tspan>
+    </text>
+    <rect x="18" y="208" width="90" height="20" rx="4" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1" />
+    <text x="63" y="222" class="font-medium" font-size="10" fill="#475569" text-anchor="middle">SAFE DRAFT</text>
+  </g>
+
+  <!-- Card 3: Invoice Scanner -->
+  <g transform="translate(610, 195)" filter="url(#cardShadow)">
+    <rect width="255" height="245" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1" />
+    <rect x="18" y="18" width="55" height="26" rx="6" fill="#EFF6FF" />
+    <text x="45" y="35" class="font-bold" font-size="12" fill="#2563EB" text-anchor="middle">M-03</text>
+
+    <text x="18" y="74" class="font-bold" font-size="16" fill="#0F172A">AI Vision Invoice</text>
+    <text x="18" y="96" class="font-bold" font-size="16" fill="#0F172A">Scanner &amp; Sheets</text>
+
+    <text x="18" y="130" class="font-regular" font-size="13" fill="#64748B">
+      <tspan x="18" dy="0">• %PDF- binary validation</tspan>
+      <tspan x="18" dy="20">• OCR line-item extraction</tspan>
+      <tspan x="18" dy="20">• Strict math verification</tspan>
+      <tspan x="18" dy="20">• Google Sheets sync retry</tspan>
+    </text>
+    <rect x="18" y="208" width="105" height="20" rx="4" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1" />
+    <text x="70" y="222" class="font-medium" font-size="10" fill="#475569" text-anchor="middle">MATH VERIFIED</text>
+  </g>
+
+  <!-- Card 4: Multi-Agent Enterprise Ops -->
+  <g transform="translate(885, 195)" filter="url(#cardShadow)">
+    <rect width="255" height="245" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1" />
+    <rect x="18" y="18" width="55" height="26" rx="6" fill="#FAF5FF" />
+    <text x="45" y="35" class="font-bold" font-size="12" fill="#7C3AED" text-anchor="middle">M-04</text>
+
+    <text x="18" y="74" class="font-bold" font-size="16" fill="#0F172A">End-to-End Multi-</text>
+    <text x="18" y="96" class="font-bold" font-size="16" fill="#0F172A">Agent Operations</text>
+
+    <text x="18" y="130" class="font-regular" font-size="13" fill="#64748B">
+      <tspan x="18" dy="0">• 9 specialized AI agents</tspan>
+      <tspan x="18" dy="20">• Finite state supervisor</tspan>
+      <tspan x="18" dy="20">• HMAC Stripe webhooks</tspan>
+      <tspan x="18" dy="20">• Factual executive digest</tspan>
+    </text>
+    <rect x="18" y="208" width="85" height="20" rx="4" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1" />
+    <text x="60" y="222" class="font-medium" font-size="10" fill="#475569" text-anchor="middle">9 AGENTS</text>
+  </g>
+
+  <!-- Benchmark & Metrics Banner -->
+  <g transform="translate(60, 465)" filter="url(#cardShadow)">
+    <rect width="1080" height="135" rx="14" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1" />
+
+    <!-- Stat 1 -->
+    <g transform="translate(30, 25)">
+      <text x="0" y="30" class="font-bold" font-size="28" fill="#4F46E5">310 ms</text>
+      <text x="0" y="55" class="font-semibold" font-size="13" fill="#0F172A">Lead Routing SLA</text>
+      <text x="0" y="75" class="font-regular" font-size="11" fill="#64748B">Target &lt; 10,000 ms</text>
+    </g>
+
+    <!-- Divider 1 -->
+    <line x1="230" y1="20" x2="230" y2="115" stroke="#E2E8F0" stroke-width="1" />
+
+    <!-- Stat 2 -->
+    <g transform="translate(260, 25)">
+      <text x="0" y="30" class="font-bold" font-size="28" fill="#059669">9 Agents</text>
+      <text x="0" y="55" class="font-semibold" font-size="13" fill="#0F172A">Orchestration System</text>
+      <text x="0" y="75" class="font-regular" font-size="11" fill="#64748B">State Machine Supervisor</text>
+    </g>
+
+    <!-- Divider 2 -->
+    <line x1="480" y1="20" x2="480" y2="115" stroke="#E2E8F0" stroke-width="1" />
+
+    <!-- Stat 3 -->
+    <g transform="translate(510, 25)">
+      <text x="0" y="30" class="font-bold" font-size="28" fill="#2563EB">100% Pass</text>
+      <text x="0" y="55" class="font-semibold" font-size="13" fill="#0F172A">Automated Test Suite</text>
+      <text x="0" y="75" class="font-regular" font-size="11" fill="#64748B">20 Pytest Unit/Int Tests</text>
+    </g>
+
+    <!-- Divider 3 -->
+    <line x1="720" y1="20" x2="720" y2="115" stroke="#E2E8F0" stroke-width="1" />
+
+    <!-- Stat 4 -->
+    <g transform="translate(750, 25)">
+      <text x="0" y="30" class="font-bold" font-size="28" fill="#7C3AED">Draft-Only</text>
+      <text x="0" y="55" class="font-semibold" font-size="13" fill="#0F172A">Human-in-the-Loop</text>
+      <text x="0" y="75" class="font-regular" font-size="11" fill="#64748B">Zero Unauthorized Sends</text>
+    </g>
+
+    <!-- Divider 4 -->
+    <line x1="930" y1="20" x2="930" y2="115" stroke="#E2E8F0" stroke-width="1" />
+
+    <!-- Stat 5 -->
+    <g transform="translate(950, 25)">
+      <text x="0" y="30" class="font-bold" font-size="26" fill="#0891B2">HMAC-SHA</text>
+      <text x="0" y="55" class="font-semibold" font-size="13" fill="#0F172A">Stripe Verification</text>
+      <text x="0" y="75" class="font-regular" font-size="11" fill="#64748B">Replay Attack Immune</text>
+    </g>
+  </g>
+
+  <!-- Footer Info Line -->
+  <text x="60" y="635" class="font-regular" font-size="13" fill="#94A3B8">Stack: Python 3.12 • FastAPI • SQLite/PostgreSQL • Make.com • n8n • Stripe • Slack • Airtable</text>
+  <text x="1140" y="635" class="font-semibold" font-size="13" fill="#4F46E5" text-anchor="end">github.com/rajeshwari229080/Datheon_AI_Automation_-_Agent_Building</text>
+</svg>

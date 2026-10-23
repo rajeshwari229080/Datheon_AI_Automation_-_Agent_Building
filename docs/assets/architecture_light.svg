@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 520" width="1100" height="520">
+  <defs>
+    <linearGradient id="archBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#F8FAFC" />
+    </linearGradient>
+
+    <filter id="boxShadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0F172A" flood-opacity="0.04" />
+    </filter>
+
+    <style>
+      .title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 700; font-size: 15px; fill: #0F172A; }
+      .desc { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 400; font-size: 12px; fill: #64748B; }
+      .badge { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 600; font-size: 11px; }
+      .header-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 700; font-size: 20px; fill: #0F172A; }
+      .header-sub { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 400; font-size: 13px; fill: #64748B; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1100" height="520" rx="16" fill="url(#archBg)" stroke="#E2E8F0" stroke-width="1" />
+
+  <!-- Title -->
+  <g transform="translate(40, 35)">
+    <rect x="0" y="0" width="160" height="26" rx="13" fill="#EEF2FF" />
+    <text x="80" y="17" class="badge" fill="#4F46E5" text-anchor="middle">SYSTEM ARCHITECTURE</text>
+    <text x="0" y="55" class="header-title">Enterprise AI Automation Suite Core Architecture</text>
+    <text x="0" y="75" class="header-sub">Clean Decoupled Boundaries, Modular Adapters &amp; Deterministic Fallback Mechanisms</text>
+  </g>
+
+  <!-- Row 1: Client & Ingestion Layer -->
+  <g transform="translate(40, 130)">
+    <rect width="1020" height="90" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-dasharray="4 4" />
+    <text x="20" y="25" class="badge" fill="#475569">INGESTION &amp; PRESENTATION LAYER</text>
+
+    <!-- Client Card 1 -->
+    <g transform="translate(20, 35)" filter="url(#boxShadow)">
+      <rect width="225" height="42" rx="8" fill="#FFFFFF" stroke="#E2E8F0" />
+      <text x="15" y="26" class="title" font-size="13">Unified Web Dashboard</text>
+    </g>
+
+    <!-- Client Card 2 -->
+    <g transform="translate(265, 35)" filter="url(#boxShadow)">
+      <rect width="225" height="42" rx="8" fill="#FFFFFF" stroke="#E2E8F0" />
+      <text x="15" y="26" class="title" font-size="13">Webhooks &amp; REST Influx</text>
+    </g>
+
+    <!-- Client Card 3 -->
+    <g transform="translate(510, 35)" filter="url(#boxShadow)">
+      <rect width="225" height="42" rx="8" fill="#FFFFFF" stroke="#E2E8F0" />
+      <text x="15" y="26" class="title" font-size="13">Email (Gmail / Outlook)</text>
+    </g>
+
+    <!-- Client Card 4 -->
+    <g transform="translate(755, 35)" filter="url(#boxShadow)">
+      <rect width="245" height="42" rx="8" fill="#FFFFFF" stroke="#E2E8F0" />
+      <text x="15" y="26" class="title" font-size="13">PDF &amp; Receipt Uploads</text>
+    </g>
+  </g>
+
+  <!-- Row 2: API Gateway & Security Kernel -->
+  <g transform="translate(40, 240)" filter="url(#boxShadow)">
+    <rect width="1020" height="60" rx="12" fill="#4F46E5" />
+    <text x="30" y="36" class="title" fill="#FFFFFF" font-size="16">FastAPI Enterprise Gateway (/api/v1)</text>
+    <text x="360" y="36" class="desc" fill="#E0E7FF" font-size="13">Pydantic v2 Validation • Rate Limiter • Prompt Injection Defense • Idempotency Manager • Audit Logging</text>
+  </g>
+
+  <!-- Row 3: 4 Business Modules -->
+  <g transform="translate(40, 320)">
+    <!-- Module 1 -->
+    <g transform="translate(0, 0)" filter="url(#boxShadow)">
+      <rect width="240" height="95" rx="10" fill="#FFFFFF" stroke="#E2E8F0" />
+      <rect x="12" y="12" width="40" height="20" rx="4" fill="#EEF2FF" />
+      <text x="32" y="26" class="badge" fill="#4F46E5" text-anchor="middle">M-1</text>
+      <text x="60" y="27" class="title" font-size="14">Lead Intelligence</text>
+      <text x="12" y="52" class="desc">Deterministic ICP scoring</text>
+      <text x="12" y="70" class="desc">Target SLA &lt; 10s (310ms)</text>
+    </g>
+
+    <!-- Module 2 -->
+    <g transform="translate(260, 0)" filter="url(#boxShadow)">
+      <rect width="240" height="95" rx="10" fill="#FFFFFF" stroke="#E2E8F0" />
+      <rect x="12" y="12" width="40" height="20" rx="4" fill="#ECFDF5" />
+      <text x="32" y="26" class="badge" fill="#059669" text-anchor="middle">M-2</text>
+      <text x="60" y="27" class="title" font-size="14">Support Triage</text>
+      <text x="12" y="52" class="desc">RAG Knowledge Citations</text>
+      <text x="12" y="70" class="desc">Draft-only Human Queue</text>
+    </g>
+
+    <!-- Module 3 -->
+    <g transform="translate(520, 0)" filter="url(#boxShadow)">
+      <rect width="240" height="95" rx="10" fill="#FFFFFF" stroke="#E2E8F0" />
+      <rect x="12" y="12" width="40" height="20" rx="4" fill="#EFF6FF" />
+      <text x="32" y="26" class="badge" fill="#2563EB" text-anchor="middle">M-3</text>
+      <text x="60" y="27" class="title" font-size="14">Invoice Scanner</text>
+      <text x="12" y="52" class="desc">OCR &amp; Line-Item Parsing</text>
+      <text x="12" y="70" class="desc">Financial Math Verified</text>
+    </g>
+
+    <!-- Module 4 -->
+    <g transform="translate(780, 0)" filter="url(#boxShadow)">
+      <rect width="240" height="95" rx="10" fill="#FFFFFF" stroke="#E2E8F0" />
+      <rect x="12" y="12" width="40" height="20" rx="4" fill="#FAF5FF" />
+      <text x="32" y="26" class="badge" fill="#7C3AED" text-anchor="middle">M-4</text>
+      <text x="60" y="27" class="title" font-size="14">Multi-Agent Ops</text>
+      <text x="12" y="52" class="desc">9 Autonomous Agents</text>
+      <text x="12" y="70" class="desc">HMAC Stripe Verification</text>
+    </g>
+  </g>
+
+  <!-- Row 4: External Integrations & Storage -->
+  <g transform="translate(40, 435)">
+    <rect width="1020" height="60" rx="10" fill="#F1F5F9" stroke="#E2E8F0" />
+    <text x="25" y="35" class="title" font-size="13">Adapters &amp; Persistence:</text>
+    <text x="180" y="35" class="desc" font-size="13">SQLite (PostgreSQL Ready) • Airtable • Slack Alerts • Gmail / Outlook • Google Sheets • Stripe Webhooks</text>
+    <rect x="910" y="18" width="90" height="24" rx="12" fill="#ECFDF5" />
+    <text x="955" y="34" class="badge" fill="#059669" text-anchor="middle">MOCK &amp; LIVE</text>
+  </g>
+</svg>
