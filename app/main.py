@@ -6,6 +6,7 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from app.config import settings, logger
 from app.database import init_db
 from app.modules.lead_routing.router import router as leads_router
+from app.modules.customer_support.router import router as support_router
 from app.adapters.airtable_adapter import airtable_adapter
 from app.adapters.slack_adapter import slack_adapter
 from app.adapters.email_adapter import email_adapter
@@ -40,6 +41,7 @@ app.add_middleware(
 
 # Mount API Routers
 app.include_router(leads_router, prefix="/api/v1")
+app.include_router(support_router, prefix="/api/v1")
 
 @app.get("/api/v1/health", tags=["System"])
 def health_check():
