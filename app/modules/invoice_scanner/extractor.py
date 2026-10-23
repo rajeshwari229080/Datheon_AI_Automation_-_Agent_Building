@@ -78,11 +78,11 @@ class InvoiceExtractor:
         invoice_date = deterministic_data.get("invoice_date") or ai_res.get("invoice_date") or "2026-10-15"
         currency = deterministic_data.get("currency") or ai_res.get("currency") or "USD"
 
-        subtotal = float(ai_res.get("subtotal") or deterministic_data.get("subtotal") or 0.0)
-        tax_amount = float(ai_res.get("tax_amount") or deterministic_data.get("tax_amount") or 0.0)
-        tax_rate = float(ai_res.get("tax_rate") or deterministic_data.get("tax_rate") or 0.0)
-        discount = float(ai_res.get("discount_amount") or 0.0)
-        total = float(ai_res.get("total_amount") or deterministic_data.get("total_amount") or 0.0)
+        subtotal = float(deterministic_data.get("subtotal") if deterministic_data.get("subtotal") is not None else (ai_res.get("subtotal") or 0.0))
+        tax_amount = float(deterministic_data.get("tax_amount") if deterministic_data.get("tax_amount") is not None else (ai_res.get("tax_amount") or 0.0))
+        tax_rate = float(deterministic_data.get("tax_rate") if deterministic_data.get("tax_rate") is not None else (ai_res.get("tax_rate") or 0.0))
+        discount = float(deterministic_data.get("discount_amount") if deterministic_data.get("discount_amount") is not None else (ai_res.get("discount_amount") or 0.0))
+        total = float(deterministic_data.get("total_amount") if deterministic_data.get("total_amount") is not None else (ai_res.get("total_amount") or 0.0))
 
         raw_items = ai_res.get("line_items", [])
         line_items = []
@@ -145,18 +145,27 @@ class InvoiceExtractor:
         elif "$" in text or "USD" in text:
             data["currency"] = "USD"
 
-        # Totals pattern
-        total_match = re.search(r"(?:grand\s+total|total\s+amount|total|amount\s+due)[:.\s]*[\$€£]?\s*([\d,]+\.\d{2})", text, re.IGNORECASE)
-        if total_match:
-            data["total_amount"] = float(total_match.group(1).replace(",", ""))
+        # Vendor pattern
+        vendor_match = re.search(r"(?:vendor|from|supplier)[:.\s]*([A-Za-z0-9\s&.,\-]+)(?=\n|$)", text, re.IGNORECASE)
+        if vendor_match:
+            data["vendor_name"] = vendor_match.group(1).strip()
 
-        subtotal_match = re.search(r"(?:subtotal|sub\s+total|net\s+amount)[:.\s]*[\$€£]?\s*([\d,]+\.\d{2})", text, re.IGNORECASE)
-        if subtotal_match:
-            data["subtotal"] = float(subtotal_match.group(1).replace(",", ""))
+        # Subtotal pattern (matches last occurrence in document summary)
+        subtotal_matches = list(re.finditer(r"(?:subtotal|sub\s+total|net\s+amount)[:.\s]*[\$€£]?\s*([\d,]+\.\d{2})", text, re.IGNORECASE))
+        if subtotal_matches:
+            data["subtotal"] = float(subtotal_matches[-1].group(1).replace(",", ""))
 
-        tax_match = re.search(r"(?:tax|vat|gst)[:.\s]*[\$€£]?\s*([\d,]+\.\d{2})", text, re.IGNORECASE)
-        if tax_match:
-            data["tax_amount"] = float(tax_match.group(1).replace(",", ""))
+        # Tax pattern
+        tax_matches = list(re.finditer(r"(?:tax|vat|gst)[:.\s]*[\$€£]?\s*([\d,]+\.\d{2})", text, re.IGNORECASE))
+        if tax_matches:
+            data["tax_amount"] = float(tax_matches[-1].group(1).replace(",", ""))
+
+        # Grand / Total pattern (prioritize Grand Total or Total Amount, taking last summary match)
+        total_matches = list(re.finditer(r"(?:grand\s+total|total\s+amount|amount\s+due|(?<=\n)total)[:.\s]*[\$€£]?\s*([\d,]+\.\d{2})", text, re.IGNORECASE))
+        if not total_matches:
+            total_matches = list(re.finditer(r"(?:total)[:.\s]*[\$€£]?\s*([\d,]+\.\d{2})", text, re.IGNORECASE))
+        if total_matches:
+            data["total_amount"] = float(total_matches[-1].group(1).replace(",", ""))
 
         return data
 
