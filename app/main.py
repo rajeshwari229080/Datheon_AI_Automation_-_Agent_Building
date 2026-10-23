@@ -8,6 +8,7 @@ from app.database import init_db
 from app.modules.lead_routing.router import router as leads_router
 from app.modules.customer_support.router import router as support_router
 from app.modules.invoice_scanner.router import router as invoices_router
+from app.modules.multi_agent_ops.router import router as enterprise_router
 from app.adapters.airtable_adapter import airtable_adapter
 from app.adapters.slack_adapter import slack_adapter
 from app.adapters.email_adapter import email_adapter
@@ -44,6 +45,7 @@ app.add_middleware(
 app.include_router(leads_router, prefix="/api/v1")
 app.include_router(support_router, prefix="/api/v1")
 app.include_router(invoices_router, prefix="/api/v1")
+app.include_router(enterprise_router, prefix="/api/v1")
 
 @app.get("/api/v1/health", tags=["System"])
 def health_check():
