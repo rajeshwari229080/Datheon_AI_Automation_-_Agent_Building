@@ -163,7 +163,8 @@ class CustomerSupportService:
             recipient=ticket.customer_email,
             subject=draft_subject,
             body=draft_body,
-            thread_id=ticket.thread_id
+            thread_id=ticket.thread_id,
+            draft_id=email_draft.id
         )
 
         # Apply thread labels

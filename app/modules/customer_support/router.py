@@ -100,7 +100,13 @@ def approve_ticket_action(ticket_id: str, payload: EmailApprovalRequest, db: Ses
     elif action == "SEND_EMAIL":
         if not draft:
             raise HTTPException(status_code=400, detail="No draft exists to send.")
-        email_adapter.send_approved_email(draft_id=draft.id, authorized_by=payload.approved_by)
+        email_adapter.send_approved_email(
+            draft_id=draft.id,
+            authorized_by=payload.approved_by,
+            recipient=ticket.customer_email,
+            subject=draft.subject,
+            body=draft.body
+        )
         draft.status = "SENT"
         draft.approved_by = payload.approved_by
         draft.approved_at = now
