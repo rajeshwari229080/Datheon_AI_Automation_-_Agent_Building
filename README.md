@@ -7,6 +7,7 @@
 [![Pydantic](https://img.shields.io/badge/Pydantic-v2.8+-E92063?style=for-the-badge&logo=pydantic&logoColor=white)](https://docs.pydantic.dev/)
 [![Tests](https://img.shields.io/badge/Pytest-20%2F20%20Passing-10B981?style=for-the-badge&logo=pytest&logoColor=white)](https://pytest.org)
 [![SLA Latency](https://img.shields.io/badge/SLA%20Latency-310ms-4F46E5?style=for-the-badge&logo=speedtest&logoColor=white)](#-performance-benchmarks--sla)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-brightgreen?style=for-the-badge&logo=githubpages&logoColor=white)](https://rajeshwari229080.github.io/Datheon_AI_Automation_-_Agent_Building/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-F59E0B?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
 
 <br/>
@@ -277,6 +278,7 @@ Comprehensive architecture, setup, security, and handover guides are available i
 - 🎬 [16-Scenario Demonstration Walkthrough](docs/DEMO_GUIDE.md)
 - 🤝 [Client Onboarding & Handover Plan](docs/CLIENT_ONBOARDING.md)
 - 🎥 [Video Demonstration Recording Script](docs/VIDEO_WALKTHROUGH.md)
+- 🌐 [GitHub Pages Deployment & Hosting Guide](docs/GITHUB_PAGES_DEPLOYMENT.md)
 - 📢 [LinkedIn Announcement & Carousel Blueprint](LINKEDIN_POST.md)
 
 ---

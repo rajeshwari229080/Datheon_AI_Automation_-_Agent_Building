@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enterprise AI Automation Suite | Operations Gateway</title>
+  <link rel="stylesheet" href="static/css/dashboard.css">
+</head>
+<body>
+
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-icon">⚡</div>
+      <div>
+        <div class="brand-title">DATHEON AI</div>
+        <div class="brand-subtitle">Automation Suite</div>
+      </div>
+    </div>
+
+    <ul class="nav-links">
+      <li class="nav-item">
+        <a class="nav-link active" onclick="switchTab('overview')">
+          <span class="nav-icon">📊</span>
+          <span>Overview</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" onclick="switchTab('leads')">
+          <span class="nav-icon">🎯</span>
+          <span>Lead Intelligence</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" onclick="switchTab('support')">
+          <span class="nav-icon">💬</span>
+          <span>Support Triage</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" onclick="switchTab('invoices')">
+          <span class="nav-icon">📑</span>
+          <span>Invoice Scanner</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" onclick="switchTab('enterprise')">
+          <span class="nav-icon">🏢</span>
+          <span>Enterprise Ops</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" onclick="switchTab('approvals')">
+          <span class="nav-icon">🛡️</span>
+          <span>Approvals Queue</span>
+          <span class="badge badge-danger" id="nav-pending-approvals-badge">0</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" onclick="switchTab('integrations')">
+          <span class="nav-icon">🔌</span>
+          <span>Integrations</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" onclick="switchTab('audit')">
+          <span class="nav-icon">📜</span>
+          <span>Audit Logs</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" onclick="switchTab('docs')">
+          <span class="nav-icon">📖</span>
+          <span>Documentation</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="mode-toggle-card">
+        <div>
+          <span class="mode-status-indicator indicator-demo" id="mode-indicator"></span>
+          <span class="mode-text" id="mode-text">DEMO MODE</span>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="toggleDemoMode()" title="Toggle between Mock and Live mode">Toggle</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Workspace -->
+  <main class="main-wrapper">
+    <header class="top-bar">
+      <h1 class="page-title" id="page-heading">Executive Operations Overview</h1>
+      <div class="top-actions">
+        <button class="btn btn-secondary btn-sm" onclick="refreshCurrentTab()">🔄 Refresh</button>
+        <button class="btn btn-primary btn-sm" onclick="seedSampleData()">🌱 Seed Demo Data</button>
+      </div>
+    </header>
+
+    <div class="content-area">
+
+      <!-- TAB 1: OVERVIEW -->
+      <section id="tab-overview" class="tab-content active">
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">Qualified Leads</span>
+              <span>🎯</span>
+            </div>
+            <div class="metric-value" id="metric-leads">0 / 0</div>
+            <div class="metric-footer" id="metric-leads-footer">Avg Latency: 0ms</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">Support Triage</span>
+              <span>💬</span>
+            </div>
+            <div class="metric-value" id="metric-support">0</div>
+            <div class="metric-footer" id="metric-support-footer">0 Urgent Cases</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">Invoice Scanner</span>
+              <span>📑</span>
+            </div>
+            <div class="metric-value" id="metric-invoices">0</div>
+            <div class="metric-footer" id="metric-invoices-footer">0 Discrepancies Caught</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">Verified Revenue</span>
+              <span>💳</span>
+            </div>
+            <div class="metric-value" id="metric-revenue">$0.00</div>
+            <div class="metric-footer" id="metric-revenue-footer">0 Active Projects</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">Pending Approvals</span>
+              <span>🛡️</span>
+            </div>
+            <div class="metric-value" id="metric-approvals" style="color: var(--warning);">0</div>
+            <div class="metric-footer">Human authorization gates</div>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <div class="card-header">
+            <h2 class="card-title">Real-Time Enterprise System Activity</h2>
+            <span class="status-pill status-valid" id="system-health-badge">● Systems Operational</span>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Module</th>
+                  <th>Action</th>
+                  <th>Entity ID</th>
+                  <th>Actor</th>
+                  <th>Status</th>
+                  <th>Latency</th>
+                </tr>
+              </thead>
+              <tbody id="overview-activity-tbody">
+                <tr><td colspan="7" style="text-align:center; color:var(--text-muted);">No activity recorded yet. Seed demo data or submit a workflow.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: LEAD INTELLIGENCE (MODULE 1) -->
+      <section id="tab-leads" class="tab-content">
+        <div class="content-card">
+          <div class="card-header">
+            <h2 class="card-title">Inbound Lead Intake & AI Qualification Simulator</h2>
+          </div>
+          <form id="lead-intake-form" onsubmit="submitLeadForm(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Full Name *</label>
+                <input type="text" id="lead-name" class="form-input" required placeholder="e.g. Sarah Connor">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Corporate Email *</label>
+                <input type="email" id="lead-email" class="form-input" required placeholder="sarah@cyberdyne.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Phone</label>
+                <input type="text" id="lead-phone" class="form-input" placeholder="+1-555-839-2001">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Company Name *</label>
+                <input type="text" id="lead-company" class="form-input" required placeholder="Cyberdyne Systems">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Company Size *</label>
+                <select id="lead-company-size" class="form-select" required>
+                  <option value="1-10">1-10 Employees (SMB)</option>
+                  <option value="11-50">11-50 Employees</option>
+                  <option value="51-200">51-200 Employees (Mid-Market)</option>
+                  <option value="201-1000" selected>201-1,000 Employees (Large Enterprise)</option>
+                  <option value="1000+">1,000+ Employees (Global Enterprise)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Estimated Budget (USD) *</label>
+                <input type="number" id="lead-budget" class="form-input" required value="45000" min="0" step="500">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Business Need & Requirements *</label>
+              <textarea id="lead-need" class="form-textarea" rows="3" required placeholder="Describe operational pain points, timeline, and scope..."></textarea>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <label style="font-size:12.5px; color:var(--text-secondary); display:flex; align-items:center; gap:8px;">
+                <input type="checkbox" id="lead-consent" checked required>
+                <span>I consent to corporate processing and automated qualification outreach.</span>
+              </label>
+              <button type="submit" class="btn btn-primary" id="btn-submit-lead">⚡ Qualify & Route Lead</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="content-card">
+          <div class="card-header">
+            <h2 class="card-title">Lead Pipeline Records</h2>
+            <div style="display:flex; gap:10px;">
+              <select id="filter-lead-priority" class="form-select" style="width:140px;" onchange="loadLeads()">
+                <option value="">All Priorities</option>
+                <option value="HIGH">High Priority</option>
+                <option value="MEDIUM">Medium Priority</option>
+                <option value="LOW">Low Priority</option>
+              </select>
+              <input type="text" id="search-leads" class="form-input" style="width:200px;" placeholder="Search company/email..." oninput="loadLeads()">
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Company</th>
+                  <th>Contact</th>
+                  <th>Budget</th>
+                  <th>Score</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                  <th>Airtable</th>
+                  <th>Slack</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="leads-table-tbody">
+                <tr><td colspan="9" style="text-align:center; color:var(--text-muted);">No leads ingested yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: SUPPORT TRIAGE (MODULE 2) -->
+      <section id="tab-support" class="tab-content">
+        <div class="content-card">
+          <div class="card-header">
+            <h2 class="card-title">Customer Support Email Triage Simulator</h2>
+            <div style="display:flex; gap:8px;">
+              <button class="btn btn-secondary btn-sm" onclick="populateSupportDemo('billing')">Load Billing Sample</button>
+              <button class="btn btn-secondary btn-sm" onclick="populateSupportDemo('urgent')">Load Sev-1 Outage</button>
+              <button class="btn btn-danger btn-sm" onclick="populateSupportDemo('injection')">Test Prompt Injection</button>
+            </div>
+          </div>
+          <form id="support-ingest-form" onsubmit="submitSupportEmail(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Customer Email *</label>
+                <input type="email" id="support-email" class="form-input" required placeholder="client@acme.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Customer Name</label>
+                <input type="text" id="support-name" class="form-input" placeholder="John Doe">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Subject *</label>
+                <input type="text" id="support-subject" class="form-input" required placeholder="Question about monthly billing schedule">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Message Body *</label>
+              <textarea id="support-body" class="form-textarea" rows="4" required placeholder="Enter customer email message text..."></textarea>
+            </div>
+            <div style="display:flex; justify-content:flex-end;">
+              <button type="submit" class="btn btn-primary" id="btn-submit-support">📨 Ingest & Triage Email</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="content-card">
+          <div class="card-header">
+            <h2 class="card-title">Support Ticket Triage Queue</h2>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Subject</th>
+                  <th>Intent</th>
+                  <th>Urgency</th>
+                  <th>Sentiment</th>
+                  <th>Human Review?</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="support-table-tbody">
+                <tr><td colspan="8" style="text-align:center; color:var(--text-muted);">No support tickets ingested yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: INVOICE SCANNER (MODULE 3) -->
+      <section id="tab-invoices" class="tab-content">
+        <div class="content-card">
+          <div class="card-header">
+            <h2 class="card-title">AI Vision Invoice Scanner & Financial Integrity Check</h2>
+          </div>
+          <div style="border: 2px dashed var(--border-color); border-radius:8px; padding: 30px; text-align:center; background-color: var(--bg-primary);">
+            <div style="font-size: 32px; margin-bottom: 8px;">📄</div>
+            <p style="font-size: 14px; color: var(--text-primary); margin-bottom: 6px; font-weight: 500;">
+              Upload PDF or Invoice Image (PNG, JPEG, WebP)
+            </p>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
+              Enforces binary signature validation, arithmetic integrity checks, and SHA-256 deduplication.
+            </p>
+            <input type="file" id="invoice-file-input" accept=".pdf,image/png,image/jpeg,image/webp" style="display:none;" onchange="handleInvoiceUpload(this)">
+            <button class="btn btn-primary" onclick="document.getElementById('invoice-file-input').click()">Select Document to Scan</button>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <div class="card-header">
+            <h2 class="card-title">Extracted Invoices & Accounting Audit</h2>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Vendor</th>
+                  <th>Invoice #</th>
+                  <th>Date</th>
+                  <th>Subtotal</th>
+                  <th>Tax</th>
+                  <th>Total</th>
+                  <th>Integrity Check</th>
+                  <th>Sheets Sync</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="invoices-table-tbody">
+                <tr><td colspan="9" style="text-align:center; color:var(--text-muted);">No invoices uploaded yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: ENTERPRISE OPERATIONS (MODULE 4) -->
+      <section id="tab-enterprise" class="tab-content">
+        <div class="content-card">
+          <div class="card-header">
+            <h2 class="card-title">Multi-Agent Customer Onboarding & State Machine</h2>
+          </div>
+          <form id="enterprise-intake-form" onsubmit="submitEnterpriseCustomer(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Client Contact Name *</label>
+                <input type="text" id="ent-client-name" class="form-input" required placeholder="e.g. Tony Stark">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Client Email *</label>
+                <input type="email" id="ent-client-email" class="form-input" required placeholder="tony@starkindustries.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Company Name *</label>
+                <input type="text" id="ent-company" class="form-input" required placeholder="Stark Industries">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Agreed Deal Value (USD) *</label>
+                <input type="number" id="ent-deal-value" class="form-input" required value="75000" min="1000">
+              </div>
+            </div>
+            <div style="display:flex; justify-content:flex-end;">
+              <button type="submit" class="btn btn-primary" id="btn-submit-enterprise">🚀 Initialize Enterprise Project</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="content-card">
+          <div class="card-header">
+            <h2 class="card-title">Active Enterprise Projects</h2>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Project ID</th>
+                  <th>Company</th>
+                  <th>Client Contact</th>
+                  <th>Deal Value</th>
+                  <th>State Machine Status</th>
+                  <th>Slack Channel</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="enterprise-projects-tbody">
+                <tr><td colspan="7" style="text-align:center; color:var(--text-muted);">No enterprise projects initialized.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Weekly Executive Digest Card -->
+        <div class="content-card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Weekly Executive Operations Digest</h2>
+              <p style="font-size: 12px; color: var(--text-muted);">Evidence-grounded reporting strictly aggregated from real operational records.</p>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="generateExecutiveDigest()">🔄 Generate Fresh Digest</button>
+          </div>
+          <div id="executive-digest-container" style="background-color: var(--bg-card); padding: 18px; border-radius: 6px; font-size: 13.5px; line-height: 1.6;">
+            <em>Loading executive digest...</em>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6: APPROVALS QUEUE -->
+      <section id="tab-approvals" class="tab-content">
+        <div class="content-card">
+          <div class="card-header">
+            <h2 class="card-title">Centralized Human Authorization Queue</h2>
+            <span class="status-pill status-warning" id="approvals-count-pill">0 Pending</span>
+          </div>
+          <p style="font-size:13px; color:var(--text-secondary); margin-bottom:16px;">
+            In adherence with enterprise security policies, sensitive actions (sending customer emails, authorizing financial disbursements, issuing contracts) mandate explicit human authorization.
+          </p>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Module</th>
+                  <th>Item Identifier</th>
+                  <th>Trigger Reason</th>
+                  <th>Risk Factors</th>
+                  <th>Operator Actions</th>
+                </tr>
+              </thead>
+              <tbody id="approvals-table-tbody">
+                <tr><td colspan="5" style="text-align:center; color:var(--text-muted);">No pending approvals. All queues clear.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 7: INTEGRATIONS -->
+      <section id="tab-integrations" class="tab-content">
+        <div class="content-card">
+          <div class="card-header">
+            <h2 class="card-title">External Integration Connectors & Adapters</h2>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Service</th>
+                  <th>Role in Suite</th>
+                  <th>Execution Mode</th>
+                  <th>Connection Health</th>
+                  <th>Configuration Detail</th>
+                </tr>
+              </thead>
+              <tbody id="integrations-table-tbody">
+                <tr><td colspan="5" style="text-align:center;">Loading integration diagnostics...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 8: AUDIT LOGS -->
+      <section id="tab-audit" class="tab-content">
+        <div class="content-card">
+          <div class="card-header">
+            <h2 class="card-title">Immutable System Audit Trail</h2>
+            <div style="display:flex; gap:10px;">
+              <select id="audit-filter-module" class="form-select" style="width:160px;" onchange="loadAuditLogs()">
+                <option value="">All Modules</option>
+                <option value="lead_routing">Lead Routing</option>
+                <option value="support">Customer Support</option>
+                <option value="invoices">Invoice Scanner</option>
+                <option value="enterprise">Enterprise Ops</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Timestamp (UTC)</th>
+                  <th>Module</th>
+                  <th>Action</th>
+                  <th>Entity Type</th>
+                  <th>Actor</th>
+                  <th>Status</th>
+                  <th>Duration</th>
+                </tr>
+              </thead>
+              <tbody id="audit-table-tbody">
+                <tr><td colspan="7" style="text-align:center;">Loading audit trail...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 9: DOCUMENTATION -->
+      <section id="tab-docs" class="tab-content">
+        <div class="content-card">
+          <div class="card-header">
+            <h2 class="card-title">Enterprise Documentation & Developer Quickstart</h2>
+          </div>
+          <div style="font-size:14px; line-height:1.7; color:var(--text-secondary);">
+            <h3 style="color:var(--text-primary); margin-bottom:8px;">Architecture & Design Strategy</h3>
+            <p style="margin-bottom:12px;">
+              The Datheon Enterprise AI Automation Suite combines four production-ready automation workflows into a unified operations portal.
+              The architecture decouples business logic behind clean abstract adapters, allowing safe deterministic test execution (Demo Mode) and live cloud connectivity (Make.com, n8n, Stripe, Airtable, Slack, Google Sheets).
+            </p>
+            <h3 style="color:var(--text-primary); margin-bottom:8px;">Available Documentation Artifacts</h3>
+            <ul style="margin-left:20px; margin-bottom:16px;">
+              <li><strong>docs/ARCHITECTURE.md</strong>: System diagrams, data flow models, and security boundary guarantees.</li>
+              <li><strong>docs/SETUP.md</strong>: Local deployment guide, Python virtual environments, and configuration.</li>
+              <li><strong>docs/INTEGRATIONS.md</strong>: Blueprint specifications for Make.com and n8n scenarios, API credentials.</li>
+              <li><strong>docs/SECURITY.md</strong>: Threat model, prompt injection defense, and cryptographic webhook verification.</li>
+              <li><strong>docs/TESTING.md</strong>: Complete pytest test execution commands and verified SLA benchmarks.</li>
+              <li><strong>docs/DEMO_GUIDE.md</strong>: 16-step end-to-end client demonstration script.</li>
+            </ul>
+            <h3 style="color:var(--text-primary); margin-bottom:8px;">Interactive API Endpoints</h3>
+            <p>Interactive OpenAPI/Swagger documentation is available directly at: <a href="/docs" target="_blank" style="color:var(--accent);">/docs</a></p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Generic Reusable Detail Modal -->
+  <div class="modal-overlay" id="detail-modal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 id="modal-title">Item Details</h3>
+        <button class="btn btn-secondary btn-sm" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body" id="modal-content">
+        Loading...
+      </div>
+      <div class="modal-footer" id="modal-actions">
+        <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="static/js/app.js"></script>
+</body>
+</html>
