@@ -149,12 +149,14 @@ class ExecutiveDigestRecord(Base):
     verified_revenue = Column(Float, default=0.0)
 
     def to_dict(self):
+        stats = self.factual_stats or {}
         return {
             "id": self.id,
             "period_start": self.period_start.isoformat() if self.period_start else None,
             "period_end": self.period_end.isoformat() if self.period_end else None,
             "generated_at": self.generated_at.isoformat() if self.generated_at else None,
-            "factual_stats": self.factual_stats,
+            "factual_stats": stats,
+            "source_coverage": stats.get("source_coverage", ["leads", "support_tickets", "invoices", "payment_events", "enterprise_projects"]),
             "narrative_summary": self.narrative_summary,
             "discrepancies_flagged": self.discrepancies_flagged,
             "verified_revenue": self.verified_revenue
