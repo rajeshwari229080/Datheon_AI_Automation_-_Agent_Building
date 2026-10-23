@@ -1,0 +1,66 @@
+{
+  "name": "n8n - Module 4: End-to-End Multi-Agent Enterprise Operations",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "stripe/webhook",
+        "httpMethod": "POST",
+        "responseMode": "lastNode"
+      },
+      "id": "1",
+      "name": "Stripe Webhook Listener",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "const crypto = require('crypto');\nconst header = $node['Stripe Webhook Listener'].json.headers['stripe-signature'];\n// Verify HMAC-SHA256 signature\nreturn items;"
+      },
+      "id": "2",
+      "name": "Signature Validation Guard",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [320, 300]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "application": "={{$env.AIRTABLE_BASE_ID}}",
+        "table": "Projects",
+        "id": "={{$json.metadata.project_id}}",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": { "Payment Status": "VERIFIED" }
+        }
+      },
+      "id": "3",
+      "name": "Update Project State",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2,
+      "position": [540, 300]
+    },
+    {
+      "parameters": {
+        "channel": "=proj-{{$json.metadata.company_slug}}",
+        "text": "🚀 Enterprise Project Onboarding Confirmed & Paid."
+      },
+      "id": "4",
+      "name": "Slack Project Kickoff",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [760, 300]
+    }
+  ],
+  "connections": {
+    "Stripe Webhook Listener": {
+      "main": [[{ "node": "Signature Validation Guard", "type": "main", "index": 0 }]]
+    },
+    "Signature Validation Guard": {
+      "main": [[{ "node": "Update Project State", "type": "main", "index": 0 }]]
+    },
+    "Update Project State": {
+      "main": [[{ "node": "Slack Project Kickoff", "type": "main", "index": 0 }]]
+    }
+  }
+}

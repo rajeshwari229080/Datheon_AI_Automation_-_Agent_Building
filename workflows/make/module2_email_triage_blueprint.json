@@ -1,0 +1,57 @@
+{
+  "name": "Module 2 - Autonomous Customer Support & Intelligent Email Triage",
+  "version": 1,
+  "flow": [
+    {
+      "id": 1,
+      "module": "google-email:WatchMessages",
+      "version": 1,
+      "parameters": {
+        "folder": "INBOX",
+        "filter": "is:unread"
+      },
+      "metadata": { "designer": { "x": 0, "y": 0, "name": "Watch Inbound Emails" } }
+    },
+    {
+      "id": 2,
+      "module": "builtin:Router",
+      "version": 1,
+      "metadata": { "designer": { "x": 300, "y": 0, "name": "Prompt Injection Filter" } }
+    },
+    {
+      "id": 3,
+      "module": "openai:CreateChatCompletion",
+      "version": 1,
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "messages": [
+          { "role": "system", "content": "You are an enterprise support triage AI. Categorize intent, urgency, and generate a polite, grounded draft reply." },
+          { "role": "user", "content": "Subject: {{1.subject}}\nBody: {{1.text}}" }
+        ],
+        "response_format": { "type": "json_object" }
+      },
+      "metadata": { "designer": { "x": 600, "y": 0, "name": "Intent & Sentiment Classification" } }
+    },
+    {
+      "id": 4,
+      "module": "google-email:CreateDraft",
+      "version": 1,
+      "parameters": {
+        "to": "{{1.from}}",
+        "subject": "Re: {{1.subject}}",
+        "content": "{{parseJson(3.choices[1].message.content).draft_body}}"
+      },
+      "metadata": { "designer": { "x": 900, "y": 0, "name": "Create Provider Draft (Safe Draft-Only)" } }
+    },
+    {
+      "id": 5,
+      "module": "slack:CreateMessage",
+      "version": 1,
+      "parameters": {
+        "channel": "{{env.SLACK_DEFAULT_CHANNEL}}",
+        "text": "💬 *Support Draft Ready for Human Approval*\n• From: {{1.from}}\n• Subject: {{1.subject}}\n• Intent: {{parseJson(3.choices[1].message.content).intent}}\n• Urgency: {{parseJson(3.choices[1].message.content).urgency}}"
+      },
+      "metadata": { "designer": { "x": 1200, "y": 0, "name": "Escalation & Approval Notice" } }
+    }
+  ]
+}

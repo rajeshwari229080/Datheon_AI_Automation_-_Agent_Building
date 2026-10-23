@@ -1,0 +1,48 @@
+{
+  "name": "n8n - Module 2: Autonomous Customer Support & Email Triage",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": { "item": [{ "mode": "everyMinute" }] },
+        "filters": { "readStatus": "unread" }
+      },
+      "id": "1",
+      "name": "Gmail Watcher",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "prompt": "=Triage incoming email:\nFrom: {{$json.from}}\nSubject: {{$json.subject}}\nBody: {{$json.snippet}}"
+      },
+      "id": "2",
+      "name": "OpenAI Classifier",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [320, 300]
+    },
+    {
+      "parameters": {
+        "operation": "createDraft",
+        "to": "={{$node['Gmail Watcher'].json.from}}",
+        "subject": "=Re: {{$node['Gmail Watcher'].json.subject}}",
+        "message": "={{$json.draft_body}}"
+      },
+      "id": "3",
+      "name": "Create Gmail Draft (Draft-Only)",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2,
+      "position": [540, 300]
+    }
+  ],
+  "connections": {
+    "Gmail Watcher": {
+      "main": [[{ "node": "OpenAI Classifier", "type": "main", "index": 0 }]]
+    },
+    "OpenAI Classifier": {
+      "main": [[{ "node": "Create Gmail Draft (Draft-Only)", "type": "main", "index": 0 }]]
+    }
+  }
+}

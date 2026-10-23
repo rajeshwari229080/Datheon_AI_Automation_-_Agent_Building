@@ -1,0 +1,48 @@
+{
+  "name": "n8n - Module 3: AI Vision Invoice Scanner & Accounting Sync",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "invoices/upload",
+        "httpMethod": "POST",
+        "responseMode": "lastNode"
+      },
+      "id": "1",
+      "name": "Invoice Webhook Upload",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "prompt": "=Extract accounting fields from document attachment: vendor_name, invoice_number, subtotal, tax_amount, total_amount, line_items"
+      },
+      "id": "2",
+      "name": "OpenAI Vision Parser",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [320, 300]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "sheetId": "={{$env.GOOGLE_SHEET_ID}}",
+        "range": "Invoices!A:G"
+      },
+      "id": "3",
+      "name": "Google Sheets Append",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [540, 300]
+    }
+  ],
+  "connections": {
+    "Invoice Webhook Upload": {
+      "main": [[{ "node": "OpenAI Vision Parser", "type": "main", "index": 0 }]]
+    },
+    "OpenAI Vision Parser": {
+      "main": [[{ "node": "Google Sheets Append", "type": "main", "index": 0 }]]
+    }
+  }
+}

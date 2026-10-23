@@ -1,0 +1,126 @@
+{
+  "name": "Module 1 - Multi-Source Lead Routing & Instant AI Qualification",
+  "version": 1,
+  "flow": [
+    {
+      "id": 1,
+      "module": "gateway:CustomWebHook",
+      "version": 1,
+      "parameters": {
+        "hook": "lead_intake_webhook"
+      },
+      "metadata": {
+        "designer": {
+          "x": 0,
+          "y": 0,
+          "name": "Lead Intake Webhook"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "module": "util:SetVariables",
+      "version": 1,
+      "parameters": {
+        "variables": [
+          { "name": "normalized_email", "value": "{{lower(1.email)}}" },
+          { "name": "normalized_company", "value": "{{trim(1.company)}}" },
+          { "name": "budget_amount", "value": "{{ifempty(1.budget, 0)}}" }
+        ]
+      },
+      "metadata": {
+        "designer": {
+          "x": 300,
+          "y": 0,
+          "name": "Deterministic Normalization"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "module": "openai:CreateChatCompletion",
+      "version": 1,
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are an enterprise AI sales qualification architect. Evaluate lead suitability, budget alignment, and sales talking points."
+          },
+          {
+            "role": "user",
+            "content": "Lead Name: {{1.name}}\nCompany: {{2.normalized_company}}\nSize: {{1.company_size}}\nBudget: {{2.budget_amount}}\nNeed: {{1.business_need}}"
+          }
+        ],
+        "response_format": { "type": "json_object" }
+      },
+      "metadata": {
+        "designer": {
+          "x": 600,
+          "y": 0,
+          "name": "OpenAI Qualification"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "module": "airtable:CreateRecord",
+      "version": 1,
+      "parameters": {
+        "base": "{{env.AIRTABLE_BASE_ID}}",
+        "table": "Leads",
+        "record": {
+          "Name": "{{1.name}}",
+          "Email": "{{2.normalized_email}}",
+          "Company": "{{2.normalized_company}}",
+          "Budget": "{{2.budget_amount}}",
+          "Score": "{{parseJson(3.choices[1].message.content).lead_score}}",
+          "Priority": "{{parseJson(3.choices[1].message.content).recommended_priority}}",
+          "Status": "QUALIFIED"
+        }
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": 0,
+          "name": "Airtable CRM Sync"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "module": "slack:CreateMessage",
+      "version": 1,
+      "parameters": {
+        "channel": "{{env.SLACK_DEFAULT_CHANNEL}}",
+        "text": "🎯 *New Qualified Lead Ingested*\n• Company: {{2.normalized_company}}\n• Contact: {{1.name}} <{{2.normalized_email}}>\n• Budget: ${{2.budget_amount}}\n• Priority: {{parseJson(3.choices[1].message.content).recommended_priority}}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 1200,
+          "y": 0,
+          "name": "Slack Sales Alert"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "module": "gateway:WebhookRespond",
+      "version": 1,
+      "parameters": {
+        "status": 201,
+        "body": "{\"success\": true, \"lead_id\": \"{{4.id}}\", \"status\": \"QUALIFIED\"}",
+        "headers": [
+          { "name": "Content-Type", "value": "application/json" }
+        ]
+      },
+      "metadata": {
+        "designer": {
+          "x": 1500,
+          "y": 0,
+          "name": "Webhook Response"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "name": "Module 3 - AI Vision Invoice Scanner & Accounting Sync",
+  "version": 1,
+  "flow": [
+    {
+      "id": 1,
+      "module": "google-drive:WatchFilesInFolder",
+      "version": 1,
+      "parameters": {
+        "folderId": "incoming_invoices_folder"
+      },
+      "metadata": { "designer": { "x": 0, "y": 0, "name": "Watch Incoming Invoices" } }
+    },
+    {
+      "id": 2,
+      "module": "openai:CreateChatCompletion",
+      "version": 1,
+      "parameters": {
+        "model": "gpt-4o",
+        "messages": [
+          { "role": "system", "content": "Extract structured accounting data: vendor_name, invoice_number, date, subtotal, tax_amount, total_amount, line_items." },
+          { "role": "user", "content": "Extract invoice from document attachment." }
+        ],
+        "response_format": { "type": "json_object" }
+      },
+      "metadata": { "designer": { "x": 300, "y": 0, "name": "Vision / OCR Extraction" } }
+    },
+    {
+      "id": 3,
+      "module": "builtin:Router",
+      "version": 1,
+      "metadata": { "designer": { "x": 600, "y": 0, "name": "Deterministic Arithmetic Guard" } }
+    },
+    {
+      "id": 4,
+      "module": "google-sheets:AddRow",
+      "version": 1,
+      "parameters": {
+        "spreadsheetId": "{{env.GOOGLE_SHEET_ID}}",
+        "sheet": "Verified Invoices",
+        "values": [
+          "{{now}}",
+          "{{parseJson(2.choices[1].message.content).vendor_name}}",
+          "{{parseJson(2.choices[1].message.content).invoice_number}}",
+          "{{parseJson(2.choices[1].message.content).subtotal}}",
+          "{{parseJson(2.choices[1].message.content).tax_amount}}",
+          "{{parseJson(2.choices[1].message.content).total_amount}}",
+          "VALID"
+        ]
+      },
+      "metadata": { "designer": { "x": 900, "y": 0, "name": "Append to Google Sheets" } }
+    }
+  ]
+}

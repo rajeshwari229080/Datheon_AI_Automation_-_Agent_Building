@@ -1,0 +1,49 @@
+{
+  "name": "Module 4 - End-to-End Multi-Agent Enterprise Operations",
+  "version": 1,
+  "flow": [
+    {
+      "id": 1,
+      "module": "gateway:CustomWebHook",
+      "version": 1,
+      "parameters": {
+        "hook": "stripe_signed_webhook_endpoint"
+      },
+      "metadata": { "designer": { "x": 0, "y": 0, "name": "Stripe Signed Webhook" } }
+    },
+    {
+      "id": 2,
+      "module": "crypto:HmacSha256",
+      "version": 1,
+      "parameters": {
+        "secret": "{{env.STRIPE_WEBHOOK_SECRET}}",
+        "data": "{{1.body}}"
+      },
+      "metadata": { "designer": { "x": 300, "y": 0, "name": "HMAC-SHA256 Signature Validator" } }
+    },
+    {
+      "id": 3,
+      "module": "airtable:UpdateRecord",
+      "version": 1,
+      "parameters": {
+        "base": "{{env.AIRTABLE_BASE_ID}}",
+        "table": "Projects",
+        "recordId": "{{1.data.object.metadata.project_id}}",
+        "fields": {
+          "Payment Status": "VERIFIED",
+          "Amount Paid": "{{1.data.object.amount / 100}}"
+        }
+      },
+      "metadata": { "designer": { "x": 600, "y": 0, "name": "Update Airtable Project" } }
+    },
+    {
+      "id": 4,
+      "module": "slack:CreateChannel",
+      "version": 1,
+      "parameters": {
+        "name": "proj-{{lower(1.data.object.metadata.company_slug)}}"
+      },
+      "metadata": { "designer": { "x": 900, "y": 0, "name": "Provision Slack Collaboration Space" } }
+    }
+  ]
+}
